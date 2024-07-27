@@ -1,3 +1,8 @@
+NOTE: This repo contains the latest (as of July 2024) degrib source from NOAA,
+in addition to a couple of Makefile patches and build script for Linux in the
+root directory.
+
+
 # degrib
 
 Welcome to the NDFD Degrib program.

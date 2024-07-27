@@ -1,0 +1,37 @@
+--- Makefile.in.orig	2024-07-27 16:02:23.180258387 -0400
++++ Makefile.in	2024-07-27 16:03:15.088268306 -0400
+@@ -17,11 +17,11 @@
+ 
+ ############################
+ # XML Dependence
+-XML_DEF = -D_DWML_
+-XML_INC = -I../degrib -I../libxml/include -I../dwmllib
+-XML_LIB = -L../dwmllib -ldwml -L../libxml/.libs/ -lxml2
+-XML_LIBDEP = ../dwmllib/libdwml.a ../libxml/.libs/libxml2.a
+-XML_CLEAN = (cd ../dwmllib && make -f makefile clean)
++#XML_DEF = -D_DWML_
++#XML_INC = -I../degrib -I../libxml/include -I../dwmllib
++#XML_LIB = -L../dwmllib -ldwml -L../libxml/.libs/ -lxml2
++#XML_LIBDEP = ../dwmllib/libdwml.a ../libxml/.libs/libxml2.a
++#XML_CLEAN = (cd ../dwmllib && make -f makefile clean)
+ ############################
+ 
+ STD_DEF = @DSIZEOF_LONG_INT@ @DWORDS_BIGENDIAN@ @MEM_DEF@ @DDEBUG@ @DSYSTEM@ @DBAD_TCLSSH@ $(XML_DEF)
+@@ -201,7 +201,7 @@
+ # TARGETS
+ ############################
+ #all: $(PRJ_NAME) $(CLOCK_NAME) $(DP_NAME) $(DRAWSHP_NAME) $(TCL_NAME) $(TK_NAME) $(PRJ_DLL)
+-all: $(PRJ_NAME) $(CLOCK_NAME) $(DP_NAME) $(DRAWSHP_NAME) $(TCL_NAME) $(TK_NAME)
++all: $(PRJ_NAME) $(CLOCK_NAME) $(DP_NAME) $(DRAWSHP_NAME)
+ 
+ # In order for PRJ_DLL to work we need to compile with STUB_LIB / STUB_DEF
+ $(PRJ_DLL): $(STUB_OBJECTS) $(LIB_DEPENDS) $(H_SOURCES)
+@@ -242,8 +242,6 @@
+ 	cp $(CLOCK_NAME)$(EXEEXT) ../../bin
+ 	cp $(DP_NAME)$(EXEEXT) ../../bin
+ 	cp $(DRAWSHP_NAME)$(EXEEXT) ../../bin
+-	cp $(TCL_NAME)$(EXEEXT) ../../bin
+-	cp $(TK_NAME)$(EXEEXT) ../../bin
+ 
+ clean:
+ 	rm -f *.o *.bak *.BAK *.obj

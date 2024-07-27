@@ -1,0 +1,9 @@
+--- Makefile.in.orig	2024-07-27 16:04:20.676283342 -0400
++++ Makefile.in	2024-07-27 16:06:00.680310938 -0400
+@@ -1,5 +1,5 @@
+ CC=@CC@
+-CFLAGS=-O -I../.. @DWIN32@
++CFLAGS=-O -I../.. @DWIN32@ @DSYSTEM@
+ 
+ UNZ_OBJS = miniunz.o unzip.o ioapi.o @MINIZIP32@ ../../libz.a
+ ZIP_OBJS = minizip.o zip.o   ioapi.o @MINIZIP32@ ../../libz.a
