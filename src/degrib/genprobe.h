@@ -112,7 +112,7 @@ int genProbe (size_t numPnts, Point * pnts, sChar f_pntType,
               double endTime, uChar f_XML, size_t * numMatch, 
               genMatchType ** match, char *f_inTypes, char *gribFilter, 
               size_t numSector, char ** sector, sChar f_ndfdConven,
-              sChar f_avgInterp);
+              sChar f_avgInterp, double usrUnitM, double usrUnitB);
 
 #include "userparse.h"
 int Grib2DataProbe (userType * usr, int numPnts, Point * pnts, char **labels,

@@ -1,5 +1,5 @@
-#define PROGRAM_VERSION "2.25"
-#define PROGRAM_DATE "09/21/2020"
+#define PROGRAM_VERSION "2.26"
+#define PROGRAM_DATE "10/31/2022"
 /*****************************************************************************
  * userparse.h
  *
@@ -65,6 +65,7 @@ typedef struct {
    int msgNum;          /* msgNum = -msg (1..n) (0 means all messages). */
    int subgNum;         /* which subgrid in the message (0..m-1) */
    sChar f_unit;        /* f_unit = 0 -Unit n || 1 -Unit e || 2 -Unit m */
+   double unitM, unitB; /* Choice for over-riding -Unit in y=mx+b formula. */
    sChar decimal;       /* How many decimals to round to. (default 3) */
    sChar LatLon_Decimal; /* How many decimals to round Lat/Lons (default 6) */
    char *nameStyle;     /* nameStyle = -nameStyle */

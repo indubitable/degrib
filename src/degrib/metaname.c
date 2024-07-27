@@ -1767,8 +1767,8 @@ NDFD_AbrevOverideTable NDFD_Overide[] = {
    /*  4 */ {"APCP", "QPF"},
    /* Don't need SNOD for now. */
    /*  5 */ /* {"SNOD", "SnowDepth"}, */
-   /*  6 */ {"WDIR", "WindDir"},
-   /*  7 */ {"WIND", "WindSpd"},
+   /*  6 */ {"WDIR", "WindDir"}, 
+   /*  7 */ {"WIND", "WindSpd"}, 
    /*  8 */ {"TCDC", "Sky"},
    /*  9 */ {"WVHGT", "WaveHeight"},
    /* 10 */ {"ASNOW", "SnowAmt"}, 
@@ -1783,7 +1783,8 @@ GRIB2LocalTable NDFD_LclTable[] = {
    /* 1 */ {0, 1, 192, "Wx", "Weather string", "-", UC_NONE},
            {0, 1, 193, "PPI", "Precipitation Potential Index", "%", UC_NONE},
            {0, 1, 227, "IceAccum", "Ice Accumulation", "kg/m^2", UC_InchWater},
-   /* grandfather'ed in a NDFD choice for POP. */
+           {0, 1, 233, "SNOWLR", "Snow Liquid Ratio", "kg/kg", UC_NONE},
+	   /* grandfather'ed in a NDFD choice for POP. */
    /* 2 */ {0, 10, 8, "PoP12", "Prob of 0.01 In. of Precip", "%", UC_NONE},
            {0, 13, 194, "smokes", "Surface level smoke from fires",
             "log10(10^-6g/m^3)", UC_LOG10},

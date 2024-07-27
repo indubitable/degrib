@@ -1412,7 +1412,7 @@ static int ParseSect4 (sInt4 *is4, sInt4 ns4, grib_MetaData *meta)
    }
    if (is4[4] != 4) {
 #ifdef DEBUG
-      printf ("ERROR IS4 not labeled correctly. %ld\n", is4[4]);
+      printf ("ERROR IS4 not labeled correctly. %ld\n", (long int) is4[4]);
 #endif
       errSprintf ("ERROR IS4 not labeled correctly. %ld\n", is4[4]);
       return -2;
@@ -1434,7 +1434,7 @@ static int ParseSect4 (sInt4 *is4, sInt4 ns4, grib_MetaData *meta)
        (is4[7] != GS4_SATELLITE) && (is4[7] != GS4_DERIVED_INTERVAL) &&
        (is4[7] != GS4_SPATIAL_STAT)) {
 #ifdef DEBUG
-      printf ("Un-supported Template. %ld\n", is4[7]);
+      printf ("Un-supported Template. %ld\n", (long int) is4[7]);
 #endif
       errSprintf ("Un-supported Template. %ld\n", is4[7]);
       return -4;

@@ -639,6 +639,7 @@ int XMLParse(uChar f_XML, size_t numPnts, Point * pnts,
              double startTime, double endTime, size_t numNdfdVars, 
              uChar *ndfdVars, char *f_inTypes, char *gribFilter, 
              size_t numSector, char **sector, sChar f_ndfdConven, 
-             char *rtmaDataDir, sChar f_avgInterp, char *lampDataDir);
+             char *rtmaDataDir, sChar f_avgInterp, char *lampDataDir,
+             double usrUnitM, double usrUnitB);
 
 #endif

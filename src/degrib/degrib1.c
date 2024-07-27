@@ -1305,7 +1305,7 @@ static int UnpackCmplx (uChar *bds, uInt4 gribLen, uInt4 *curLoc,
       bufLoc = 8;
       for (i = 0; i < P2; i++) {
          memBitRead (&uli_temp, sizeof (sInt4), bds, 1, &bufLoc, &numUsed);
-         printf ("(%d %ld) ", i, uli_temp);
+         printf ("(%d %ld) ", i, (long int) uli_temp);
          if (numUsed != 0) {
             printf ("\n");
             bds += numUsed;
@@ -1316,7 +1316,7 @@ static int UnpackCmplx (uChar *bds, uInt4 gribLen, uInt4 *curLoc,
          bds++;
          secLen++;
       }
-      printf ("Observed Sec Len %ld\n", secLen);
+      printf ("Observed Sec Len %ld\n", (long int) secLen);
    } else {
       /* Jump over widths and secondary bitmap */
       bds += (N1 - 21);
@@ -1326,7 +1326,7 @@ static int UnpackCmplx (uChar *bds, uInt4 gribLen, uInt4 *curLoc,
    bufLoc = 8;
    for (i = 0; i < P1; i++) {
       memBitRead (&uli_temp, sizeof (sInt4), bds, numBits, &bufLoc, &numUsed);
-      printf ("(%d %ld) (numUsed %d numBits %d)", i, uli_temp, numUsed,
+      printf ("(%d %ld) (numUsed %d numBits %d)", i, (long int) uli_temp, (int) numUsed,
               numBits);
       if (numUsed != 0) {
          printf ("\n");
@@ -1339,7 +1339,7 @@ static int UnpackCmplx (uChar *bds, uInt4 gribLen, uInt4 *curLoc,
       secLen++;
    }
 
-   printf ("Observed Sec Len %ld\n", secLen);
+   printf ("Observed Sec Len %ld\n", (long int) secLen);
    printf ("N2 = %d\n", N2);
 
    errSprintf ("Don't know how to handle Complex GRIB1 packing yet.\n");
@@ -1717,7 +1717,8 @@ static int ReadGrib1Sect4 (uChar *bds, uInt4 gribLen, uInt4 *curLoc,
 int ReadGrib1Record (FILE *fp, sChar f_unit, double **Grib_Data,
                      uInt4 *grib_DataLen, grib_MetaData *meta,
                      IS_dataType *IS, sInt4 sect0[SECT0LEN_WORD],
-                     uInt4 gribLen, double majEarth, double minEarth)
+                     uInt4 gribLen, double majEarth, double minEarth,
+                     double usrUnitM, double usrUnitB)
 {
    sInt4 nd5;           /* Size of grib message rounded up to the nearest *
                          * sInt4. */
@@ -1741,7 +1742,7 @@ int ReadGrib1Record (FILE *fp, sChar f_unit, double **Grib_Data,
    /* Make room for entire message, and read it in. */
    /* nd5 needs to be gribLen in (sInt4) units rounded up. */
 #ifdef DEBUG
-   printf ("GribLen == %ld\n", gribLen);
+   printf ("GribLen == %ld\n", (long int) gribLen);
 #endif
    nd5 = (gribLen + 3) / 4;
    if (nd5 > IS->ipackLen) {
@@ -1850,6 +1851,10 @@ int ReadGrib1Record (FILE *fp, sChar f_unit, double **Grib_Data,
                                          1 + unitLen * sizeof (char));
       strncpy (meta->unitName, unitName, unitLen);
       meta->unitName[unitLen] = '\0';
+   }
+   if ((usrUnitM != 1) || (usrUnitB != 0)) {
+      unitM = usrUnitM;
+      unitB = usrUnitB;
    }
 
    /* Read the GRID. */
@@ -1965,7 +1970,7 @@ int main (int argc, char **argv)
    if (version == 1) {
       meta.GribVersion = version;
       ReadGrib1Record (grib_fp, f_unit, &grib_Data, &grib_DataLen, &meta,
-                       &is, sect0, gribLen);
+                       &is, sect0, gribLen, 1, 0);
       offset = offset + gribLen + wmoLen;
    }
 

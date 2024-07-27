@@ -1438,7 +1438,7 @@ int Asc2Flx (char *inFile, char *outFile)
    int curSect = -1;
    int index;
    gdsType gds;         /* The GDS. */
-   char *flxArray;      /* The index file in a char buffer. */
+   char *flxArray = NULL;   /* The index file in a char buffer. */
    int flxArrayLen;     /* The length of the flxArray buffer. */
    sInt4 flxLen;
    char elem[256];

@@ -29,9 +29,6 @@ SET_SIZEOF_LONGINT()
 # Also sets -Wall in CFLAGS.
 SET_ANSIFLAG()
 
-# Set @DWINDOWS@ variable (drawshp doesn't need X or Tcl/Tk but does need this)
-  # SET_DWINDOWS()
-
 # Set @DYNAMIC_LIB@ variable.
   # SET_DYNAMIC_LIB()
 

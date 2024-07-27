@@ -24,9 +24,9 @@ XML_LIBDEP = ../dwmllib/libdwml.a ../libxml/.libs/libxml2.a
 XML_CLEAN = (cd ../dwmllib && make -f makefile clean)
 ############################
 
-STD_DEF = @DSIZEOF_LONG_INT@ @DWORDS_BIGENDIAN@ @MEM_DEF@ @DDEBUG@ @DWINDOWS@ @DBAD_TCLSSH@ $(XML_DEF)
+STD_DEF = @DSIZEOF_LONG_INT@ @DWORDS_BIGENDIAN@ @MEM_DEF@ @DDEBUG@ @DSYSTEM@ @DBAD_TCLSSH@ $(XML_DEF)
 STUB_DEF = -DUSE_TCL_STUBS @HALO_DEF@
-STD_INC = @MEM_STDINC@ -I../emapf-c -I../degrib-core -I../netcdf/libsrc -I../gd -I../zlib/contrib/minizip -I../zlib $(XML_INC)
+STD_INC = @MEM_STDINC@ -I../emapf-c -I../degrib-core -I../degrib-core/degrib-lib -I../netcdf/libsrc -I../gd -I../zlib/contrib/minizip -I../zlib $(XML_INC)
 TCL_INC = -I$(TCL_PREFIX)/include
 TK_INC = -I$(TK_PREFIX)/include
 GUI_INC = $(TCL_INC) $(TK_INC) $(STD_INC)

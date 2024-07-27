@@ -290,6 +290,10 @@ int drawGrib (const char *Filename, double *grib_Data,
          } else {
             if (f_missing) {
                mapIni.all.layers[i].ramp.missValue = missing;
+               mapIni.all.layers[i].ramp.missColor.r = 255;
+               mapIni.all.layers[i].ramp.missColor.g = 255;
+               mapIni.all.layers[i].ramp.missColor.b = 255;
+               mapIni.all.layers[i].ramp.missColor.f_null = 1;
                mapIni.all.layers[i].ramp.f_missing = f_missing;
             }
          }

@@ -1,5 +1,5 @@
 CC=@CC@
-CFLAGS=-O -I../.. @DWINDOWS@
+CFLAGS=-O -I../.. @DWIN32@
 
 UNZ_OBJS = miniunz.o unzip.o ioapi.o @MINIZIP32@ ../../libz.a
 ZIP_OBJS = minizip.o zip.o   ioapi.o @MINIZIP32@ ../../libz.a

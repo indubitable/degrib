@@ -364,8 +364,17 @@ int myStat (char *filename, char *perm, sInt4 *size, double *mtime)
          *perm = 0;
       return 0;
    }
-
-   if ((stbuf.st_mode & S_IFMT) == S_IFDIR) {
+#ifndef S_IREAD
+   #define S_IREAD S_IRUSR
+#endif
+#ifndef S_IWRITE
+   #define S_IWRITE S_IWUSR
+#endif
+#ifndef S_IEXEC
+   #define S_IEXEC S_IXUSR
+#endif
+   /*if ((stbuf.st_mode & S_IFMT) == S_IFDIR) {*/
+   if (S_ISDIR(stbuf.st_mode)) {
       /* Is a directory */
       if (size)
          *size = stbuf.st_size;
@@ -379,7 +388,8 @@ int myStat (char *filename, char *perm, sInt4 *size, double *mtime)
             *perm += 1;
       }
       return MYSTAT_ISDIR;
-   } else if ((stbuf.st_mode & S_IFMT) == S_IFREG) {
+   /* } else if ((stbuf.st_mode & S_IFMT) == S_IFREG) {*/
+   } else if (S_ISREG(stbuf.st_mode)) {
       /* Is a file */
       if (size)
          *size = stbuf.st_size;

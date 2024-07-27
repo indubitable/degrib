@@ -897,7 +897,7 @@ uChar genNdfdEnum_fromMeta (const grib_MetaData *meta) {
 #ifdef DEBUG
    printf ("PI3 %d %d,%d,%d,%d %d,%d,%d,%d,-1,%ld %d,%f,%f %d,-1,-1,-1,-1\n", meta->GribVersion,
            meta->center, meta->subcenter, meta->pds2.sect4.genProcess, meta->pds2.sect4.genID, meta->pds2.prodType,
-           meta->pds2.sect4.templat, meta->pds2.sect4.cat, meta->pds2.sect4.subcat, lenTime,
+           meta->pds2.sect4.templat, meta->pds2.sect4.cat, meta->pds2.sect4.subcat, (long int) lenTime,
            meta->pds2.sect4.fstSurfType, meta->pds2.sect4.fstSurfValue, meta->pds2.sect4.sndSurfValue,
            meta->pds2.sect4.probType);
 #endif
@@ -1911,7 +1911,7 @@ static int genProbeGrib (FILE *fp, size_t numPnts, const Point * pnts,
                          sChar f_unit, double majEarth, double minEarth,
                          sChar f_WxParse, sChar f_SimpleVer, sChar f_SimpleWWA,
                          size_t *numMatch, genMatchType ** match,
-                         sChar f_avgInterp)
+                         sChar f_avgInterp, double usrUnitM, double usrUnitB)
 {
    IS_dataType is;      /* Un-parsed meta data for this GRIB2 message. As
                          * well as some memory used by the unpacker. */
@@ -1960,7 +1960,7 @@ static int genProbeGrib (FILE *fp, size_t numPnts, const Point * pnts,
       /* Read the GRIB message. */
       if (ReadGrib2Record (fp, f_unit, &gribData, &gribDataLen, &meta,
                            &is, subgNum, majEarth, minEarth, f_SimpleVer, f_SimpleWWA,
-                           &f_lstSubGrd, &(lwlf), &(uprt)) != 0) {
+                           &f_lstSubGrd, &(lwlf), &(uprt), usrUnitM, usrUnitB) != 0) {
          preErrSprintf ("ERROR: In call to ReadGrib2Record.\n");
          free (gribData);
          IS_Free (&is);
@@ -2515,7 +2515,8 @@ int genProbe (size_t numPnts, Point * pnts, sChar f_pntType,
               genElemDescript * elem, sChar f_valTime, double startTime,
               double endTime, uChar f_XML, size_t *numMatch, genMatchType ** match,
               char *f_inTypes, char *gribFilter, size_t numSector,
-              char **sector, sChar f_ndfdConven, sChar f_avgInterp)
+              char **sector, sChar f_ndfdConven, sChar f_avgInterp,
+              double usrUnitM, double usrUnitB)
 {
 #ifndef DP_ONLY
    FILE *fp;
@@ -2653,7 +2654,7 @@ int genProbe (size_t numPnts, Point * pnts, sChar f_pntType,
          if (genProbeGrib (fp, numPnts, pnts, f_pntType, numElem, elem,
                            f_valTime, startTime, endTime, f_interp, f_unit,
                            majEarth, minEarth, f_WxParse, f_SimpleVer, f_SimpleWWA,
-                           numMatch, match, f_avgInterp) != 0) {
+                           numMatch, match, f_avgInterp, usrUnitM, usrUnitB) != 0) {
 #ifdef DEBUG
             msg = errSprintf (NULL);
             printf ("Error message was: '%s'\n", msg);
@@ -3554,7 +3555,7 @@ int ProbeCmd (sChar f_Command, userType *usr)
                          usr->numNdfdVars, usr->ndfdVars, usr->f_inTypes,
                          usr->gribFilter, numSector, sector,
                          usr->f_ndfdConven, usr->rtmaDataDir, usr->f_avgInterp,
-                         usr->lampDataDir);
+                         usr->lampDataDir, usr->unitM, usr->unitB);
 /*
          ans = XMLParse (usr->f_XMLDocType, usr->f_XML, numPnts, pnts, pntInfo,
                          usr->f_pntType, labels, &(usr->numInNames), 
@@ -3578,7 +3579,7 @@ int ProbeCmd (sChar f_Command, userType *usr)
                             usr->startTime, usr->endTime, usr->numNdfdVars,
                             usr->ndfdVars, usr->f_inTypes, usr->gribFilter,
                             numSector, sector, usr->f_ndfdConven,
-                            usr->f_avgInterp);
+                            usr->f_avgInterp, usr->unitM, usr->unitB);
 
          if (ans == 0)
             ans = ans2;
@@ -3592,7 +3593,7 @@ int ProbeCmd (sChar f_Command, userType *usr)
                            usr->startTime, usr->endTime, usr->numNdfdVars,
                            usr->ndfdVars, usr->f_inTypes, usr->gribFilter,
                            numSector, sector, usr->f_ndfdConven, usr->f_XML,
-                           usr->f_avgInterp);
+                           usr->f_avgInterp, usr->unitM, usr->unitB);
          if (ans == 0)
             ans = ans2;
       }

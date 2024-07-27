@@ -19,7 +19,7 @@ AC_DEFUN([SET_SIZEOF_LONGINT],
   # in ac_cv_sizeof_long_int?
 #  AC_LONG_64_BITS
   case $host in
-    *-*-cygwin*|*-*-mingw*)
+    *-*-cygwin*|*-*-mingw*|*-*-msys*)
       AC_SUBST([DSIZEOF_LONG_INT],"-DSIZEOF_LONG_INT=4");;
     *)
       AC_CHECK_SIZEOF([long int])
@@ -41,7 +41,7 @@ AC_DEFUN([SET_ANSIFLAG],
      ANSIFLAG="-pedantic"
      C99FLAG="-pedantic"
      case $host in
-       *-*-cygwin*|*-*-mingw*)
+       *-*-cygwin*|*-*-mingw*|*-*-msys*)
          ANSIFLAG="-ansi -pedantic"
          C99FLAG="-std=c99 -pedantic";;
      esac
@@ -62,20 +62,33 @@ AC_DEFUN([SET_ANSIFLAG],
 ])
 
 #####
-# Set @DWINDOWS@ variable.
+# Set @DSYSTEM@ variable.
 #####
-AC_DEFUN([SET_DWINDOWS],
+AC_DEFUN([SET_DSYSTEM],
 [
-  DWINDOWS=""
   case $host in
-    *-*-cygwin*|*-*-mingw*)
-      DWINDOWS="-D_WINDOWS_";;
+    *-*-cygwin*|*-*-mingw*|*-*-msys*)
+      DSYSTEM="-DMS_WINDOWS";;
     *-*-linux*)
-      DWINDOWS="-D_LINUX_";;
+      DSYSTEM="-D_LINUX_";;
     *)
-      DWINDOWS="-D_UNIX_";;
+      DSYSTEM="-D_UNIX_";;
   esac
-  AC_SUBST([DWINDOWS])
+  AC_SUBST([DSYSTEM])
+])
+
+#####
+# Set @WIN32@ variable.
+#####
+AC_DEFUN([SET_DWIN32],
+[
+  case $host in
+    *-*-cygwin*|*-*-mingw*|*-*-msys*)
+      DWIN32="-DWIN32";;
+    *)
+      DWIN32="";;
+  esac
+  AC_SUBST([DWIN32])
 ])
 
 #####
@@ -85,7 +98,7 @@ AC_DEFUN([SET_MINIZIP32],
 [
   MINIZIP32=""
   case $host in
-    *-*-cygwin*|*-*-mingw*)
+    *-*-cygwin*|*-*-mingw*|*-*-msys*)
       MINIZIP32="iowin32.o";;
     *)
       MINIZIP32="";;
@@ -101,7 +114,7 @@ AC_DEFUN([SET_DYNAMIC_LIB],
 [
   DYNAMIC_LIB="-ldl"
   case $host in
-    *-*-cygwin*|*-*-mingw*)
+    *-*-cygwin*|*-*-mingw*|*-*-msys*)
       DYNAMIC_LIB="";;
   esac
   AC_SUBST([DYNAMIC_LIB])
@@ -114,14 +127,14 @@ AC_DEFUN([SET_DLLEXT],
 [
   DLLEXT=".so"
   case $host in
-    *-*-cygwin*|*-*-mingw*)
+    *-*-cygwin*|*-*-mingw*|*-*-msys*)
       DLLEXT=".dll";;
   esac
   AC_SUBST([DLLEXT])
   DLLFLAGS="-shared"
   case $host in
     *-*-aix*) DLLFLAGS="/usr/bin/ld -b$aixsize -bM:SRE -G -bnoentry";;
-    *-*-cygwin*|*-*-mingw*) DLLFLAGS="-shared -Wl,--output-def,lib.def,--out-implib,lib.a";;
+    *-*-cygwin*|*-*-mingw*|*-*-msys*) DLLFLAGS="-shared -Wl,--output-def,lib.def,--out-implib,lib.a";;
   esac
   AC_SUBST([DLLFLAGS])
 ])
@@ -178,7 +191,7 @@ AC_DEFUN([OPT_HALO],
   # Single quotes are the key to the following.
       AC_SUBST([HALO_STDINC],'-I$(top_srcdir)/halo')
       case $host in
-        *-*-cygwin*|*-*-mingw*)
+        *-*-cygwin*|*-*-mingw*|*-*-msys*)
           AC_SUBST([HALO_LIBDEP],'$(top_srcdir)/halo/libhalo85.a')
           AC_SUBST([HALO_STDLIB],'-L$(top_srcdir)/halo -lhalo85');;
         *)
@@ -430,7 +443,7 @@ AC_DEFUN([OPT_TKPUTS],
   TCL_LDFLAGS=""
   TK_LDFLAGS=""
   case "$host" in
-    *-*-cygwin*|*-*-mingw*)
+    *-*-cygwin*|*-*-mingw*|*-*-msys*)
       TCL_LDFLAGS="-mconsole"
       AS_IF([test "x$with_tkputs" != xno],
         [TK_LDFLAGS="-mconsole"],

@@ -113,7 +113,7 @@ int Grib2Database (userType *usr, IS_dataType *is, grib_MetaData *meta)
          if (ReadGrib2Record (grib_fp, usr->f_unit, &grib_Data, &grib_DataLen,
                               meta, is, subgNum, usr->majEarth, usr->minEarth,
                               usr->f_SimpleVer, usr->f_SimpleWWA, &f_endMsg, &(usr->lwlf),
-                              &(usr->uprt)) != 0) {
+                              &(usr->uprt), usr->unitM, usr->unitB) != 0) {
             preErrSprintf ("ERROR: In call to ReadGrib2Record.\n");
             /* Update fileLen and write the index file out. */
             flxLen = flxArrayLen;

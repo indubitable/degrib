@@ -20,10 +20,6 @@
  * NOTES
  *****************************************************************************
  */
-#if defined(_WINDOWS_)
-#define MS_WINDOWS
-#endif
-
 #include <tk.h>
 #ifdef MS_WINDOWS
 #define WIN32_LEAN_AND_MEAN

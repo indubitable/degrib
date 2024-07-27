@@ -827,7 +827,8 @@ int ReadGrib2Record (FILE *fp, sChar f_unit, double **Grib_Data,
                      uInt4 *grib_DataLen, grib_MetaData *meta,
                      IS_dataType *IS, int subgNum, double majEarth,
                      double minEarth, int simpVer, int simpWWA,
-                     sInt4 *f_endMsg, LatLon *lwlf, LatLon *uprt)
+                     sInt4 *f_endMsg, LatLon *lwlf, LatLon *uprt,
+                     double usrUnitM, double usrUnitB)
 {
    sInt4 l3264b;        /* Number of bits in a sInt4.  Needed by FORTRAN
                          * unpack library to determine if system has a 4
@@ -897,7 +898,8 @@ int ReadGrib2Record (FILE *fp, sChar f_unit, double **Grib_Data,
       meta->GribVersion = version;
       if (version == 1) {
          if (ReadGrib1Record (fp, f_unit, Grib_Data, grib_DataLen, meta, IS,
-                              sect0, gribLen, majEarth, minEarth) != 0) {
+                              sect0, gribLen, majEarth, minEarth, usrUnitM,
+                              usrUnitB) != 0) {
             preErrSprintf ("Problems with ReadGrib1Record called by "
                            "ReadGrib2Record\n");
             free (buff);
@@ -1079,7 +1081,7 @@ int ReadGrib2Record (FILE *fp, sChar f_unit, double **Grib_Data,
             /* Warning. */
 #ifdef DEBUG
             printf ("Warning: Unpack library warning code (%ld %ld)\n",
-                    jer[i], jer[ndjer + i]);
+                    (long int) jer[i], (long int) jer[ndjer + i]);
 #endif
          } else {
             /* BAD Error. */
@@ -1100,9 +1102,9 @@ int ReadGrib2Record (FILE *fp, sChar f_unit, double **Grib_Data,
       FILE *fp;
       if ((fp = fopen ("dump.is0", "wt")) != NULL) {
          for (i = 0; i < 8; i++) {
-            fprintf (fp, "---Section %d---\n", i);
+            fprintf (fp, "---Section %d---\n", (int) i);
             for (j = 1; j <= IS->ns[i]; j++) {
-               fprintf (fp, "IS%d Item %d = %ld\n", i, j, IS->is[i][j - 1]);
+               fprintf (fp, "IS%d Item %d = %ld\n", (int) i, j, (long int) IS->is[i][j - 1]);
             }
          }
          fclose (fp);
@@ -1126,11 +1128,6 @@ int ReadGrib2Record (FILE *fp, sChar f_unit, double **Grib_Data,
 
    /* Figure out an equation to pass to ParseGrid to convert the units for
     * this grid. */
-/*
-   if (ComputeUnit (meta->pds2.prodType, meta->pds2.sect4.templat,
-                    meta->pds2.sect4.cat, meta->pds2.sect4.subcat, f_unit,
-                    &unitM, &unitB, unitName) == 0) {
-*/
    if (ComputeUnit (meta->convert, meta->unitName, f_unit, &unitM, &unitB,
                     unitName) == 0) {
       unitLen = strlen (unitName);
@@ -1138,6 +1135,10 @@ int ReadGrib2Record (FILE *fp, sChar f_unit, double **Grib_Data,
                                          1 + unitLen * sizeof (char));
       strncpy (meta->unitName, unitName, unitLen);
       meta->unitName[unitLen] = '\0';
+   }
+   if ((usrUnitM != 1) || (usrUnitB != 0)) {
+      unitM = usrUnitM;
+      unitB = usrUnitB;
    }
 
    /* compute the subgrid. */
@@ -1242,7 +1243,8 @@ int ReadGrib2RecordFast (FILE *fp, sChar f_unit, double **Grib_Data,
                          uInt4 *grib_DataLen, grib_MetaData *meta,
                          IS_dataType *IS, int subgNum, double majEarth,
                          double minEarth, int simpVer, int simpWWA,
-                         sInt4 *f_endMsg, LatLon *lwlf, LatLon *uprt)
+                         sInt4 *f_endMsg, LatLon *lwlf, LatLon *uprt,
+                         double usrUnitM, double usrUnitB)
 {
    sInt4 l3264b;        /* Number of bits in a sInt4.  Needed by FORTRAN
                          * unpack library to determine if system has a 4
@@ -1473,7 +1475,7 @@ int ReadGrib2RecordFast (FILE *fp, sChar f_unit, double **Grib_Data,
             /* Warning. */
 #ifdef DEBUG
             printf ("Warning: Unpack library warning code (%ld %ld)\n",
-                    jer[i], jer[ndjer + i]);
+                    (long int) jer[i], (long int) jer[ndjer + i]);
 #endif
          } else {
             /* BAD Error. */
@@ -1494,9 +1496,9 @@ int ReadGrib2RecordFast (FILE *fp, sChar f_unit, double **Grib_Data,
       FILE *fp;
       if ((fp = fopen ("dump.is0", "wt")) != NULL) {
          for (i = 0; i < 8; i++) {
-            fprintf (fp, "---Section %d---\n", i);
+            fprintf (fp, "---Section %d---\n", (int) i);
             for (j = 1; j <= IS->ns[i]; j++) {
-               fprintf (fp, "IS%d Item %d = %ld\n", i, j, IS->is[i][j - 1]);
+               fprintf (fp, "IS%d Item %d = %ld\n", (int) i, j, (long int) IS->is[i][j - 1]);
             }
          }
          fclose (fp);
@@ -1520,11 +1522,6 @@ int ReadGrib2RecordFast (FILE *fp, sChar f_unit, double **Grib_Data,
 
    /* Figure out an equation to pass to ParseGrid to convert the units for
     * this grid. */
-/*
-   if (ComputeUnit (meta->pds2.prodType, meta->pds2.sect4.templat,
-                    meta->pds2.sect4.cat, meta->pds2.sect4.subcat, f_unit,
-                    &unitM, &unitB, unitName) == 0) {
-*/
    if (ComputeUnit (meta->convert, meta->unitName, f_unit, &unitM, &unitB,
                     unitName) == 0) {
       unitLen = strlen (unitName);
@@ -1532,6 +1529,10 @@ int ReadGrib2RecordFast (FILE *fp, sChar f_unit, double **Grib_Data,
                                          1 + unitLen * sizeof (char));
       strncpy (meta->unitName, unitName, unitLen);
       meta->unitName[unitLen] = '\0';
+   }
+   if ((usrUnitM != 1) || (usrUnitB != 0)) {
+      unitM = usrUnitM;
+      unitB = usrUnitB;
    }
 
    /* compute the subgrid. */

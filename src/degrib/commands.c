@@ -739,7 +739,7 @@ static int StormTotal (userType *usr, FILE *grib_fp, IS_dataType *is,
       if (ReadGrib2Record (grib_fp, usr->f_unit, &grib_Data, &grib_DataLen,
                            meta, is, subgNum, usr->majEarth, usr->minEarth,
                            usr->f_SimpleVer, usr->f_SimpleWWA, &f_endMsg, &(usr->lwlf),
-                           &(usr->uprt)) != 0) {
+                           &(usr->uprt), usr->unitM, usr->unitB) != 0) {
          preErrSprintf ("ERROR: In call to ReadGrib2Record.\n");
          error=1;
          break;
@@ -948,7 +948,7 @@ int Grib2Convert (userType *usr, FILE *grib_fp, IS_dataType *is,
       if (ReadGrib2Record (grib_fp, usr->f_unit, &grib_Data, &grib_DataLen,
                            meta, is, subgNum, usr->majEarth, usr->minEarth,
                            usr->f_SimpleVer, usr->f_SimpleWWA, &f_endMsg, &(usr->lwlf),
-                           &(usr->uprt)) != 0) {
+                           &(usr->uprt), usr->unitM, usr->unitB) != 0) {
          preErrSprintf ("ERROR: In call to ReadGrib2Record.\n");
          free (grib_Data);
          return 1;

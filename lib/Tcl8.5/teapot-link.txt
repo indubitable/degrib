@@ -1,1 +1,0 @@
-c:\tcl859\lib\teapot

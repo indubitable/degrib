@@ -3,8 +3,8 @@
 # DEGRIB configure.ac : version 20070705
 
 AC_PREREQ(2.59)
-AC_INIT([degrib],[2.25],[arthur.taylor@noaa.gov])
-AC_SUBST(PACKAGE_DATE,'20200921')
+AC_INIT([degrib],[2.26],[arthur.taylor@noaa.gov])
+AC_SUBST(PACKAGE_DATE,'20221031')
 AC_CONFIG_SRCDIR([Makefile.in])
 AC_CONFIG_HEADERS([gd/config.h:gd/scripts/config.hin])
 AC_CANONICAL_HOST()
@@ -40,8 +40,11 @@ SET_SIZEOF_LONGINT()
 # Also sets -Wall in CFLAGS.
 SET_ANSIFLAG()
 
-# Set @DWINDOWS@ variable (drawshp doesn't need X or Tcl/Tk but does need this)
-SET_DWINDOWS()
+# Set @DSYSTEM@ variable (drawshp doesn't need X or Tcl/Tk but does need this)
+SET_DSYSTEM()
+
+# For some reason zlib/contrib/minizip likes -DWIN32 but not -D_WINDOWS_
+SET_DWIN32()
 
 # Set @DYNAMIC_LIB@ variable.
 SET_DYNAMIC_LIB()
@@ -185,7 +188,7 @@ AC_CONFIG_FILES([zlib/Makefile:zlib/scripts/Makefile.in])
 AC_CONFIG_FILES([zlib/contrib/minizip/Makefile])
 AC_CONFIG_FILES([libpng/Makefile:libpng/scripts/Makefile.in])
 AC_CONFIG_FILES([degrib-core/Makefile])
-AC_CONFIG_FILES([driver/Makefile])
+#AC_CONFIG_FILES([driver/Makefile])
 AC_CONFIG_FILES([gd/Makefile:gd/scripts/Makefile.in])
 AC_CONFIG_FILES([degrib/Makefile])
 AC_CONFIG_FILES([xyz2shp/Makefile])

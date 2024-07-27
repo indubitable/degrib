@@ -85,6 +85,8 @@ void UserInit (userType *usr)
    usr->msgNum = -1;
    usr->subgNum = -1;
    usr->f_unit = -1;
+   usr->unitM = 1;
+   usr->unitB = 0;
    usr->decimal = -1;
    usr->LatLon_Decimal = -1;
    usr->nameStyle = NULL;
@@ -263,7 +265,7 @@ int UserValidate (userType *usr)
    if ((usr->f_Command != CMD_VERSION) && (usr->f_Command != CMD_SECTOR)) {
       if (usr->numInNames == 0) {
 /*#ifdef WIN32*/
-#ifdef _WINDOWS_
+#ifdef MS_WINDOWS
          /* Set stdin to binary mode */
          setmode (0, O_BINARY);
 #endif
@@ -281,7 +283,7 @@ int UserValidate (userType *usr)
          free (usr->f_inTypes);
          usr->f_inTypes = NULL;
 /*#ifdef WIN32*/
-#ifdef _WINDOWS_
+#ifdef MS_WINDOWS
          /* Set stdin to binary mode */
          setmode (0, O_BINARY);
 #endif
@@ -619,7 +621,7 @@ int UserValidate (userType *usr)
          return -1;
       }
 /*#ifdef WIN32*/
-#ifdef _WINDOWS_
+#ifdef MS_WINDOWS
       /* Set stdout to binary mode */
       setmode (1, O_BINARY);
 #endif
@@ -726,8 +728,8 @@ int myCommaDoubleList2 (char *name, double *x, double *y)
  */
 static char *UsrOpt[] = { "-cfg", "-in", "-I", "-C", "-P", "-V", "-Flt",
    "-nFlt", "-Shp", "-Shp2", "-nShp", "-Met", "-nMet", "-msg", "-nameStyle",
-   "-out", "-Interp", "-revFlt", "-nRevFlt", "-MSB", "-nMSB", 
-   "-little_endian", "-Unit",
+   "-out", "-Interp", "-revFlt", "-nRevFlt", "-MSB", "-nMSB",
+   "-little_endian", "-Unit", "-unitM", "-unitB",
    "-namePath", "-pnt", "-pntFile", "-poly", "-nMissing", "-Decimal", "-IS0",
    "-GrADS", "-SimpleWx", "-radEarth", "-Separator", "-WxParse", "-pntStyle",
    "-Data", "-Index", "-Cube", "-nCube", "-DP", "-Print", "-Append",
@@ -753,7 +755,7 @@ static int ParseUserChoice (userType *usr, char *cur, char *next)
 {
    enum { CFG, IN, INVENTORY, CONVERT, PROBE, VERSION, FLT, NO_FLT, SHP,
       SHP2, NO_SHP, META, NO_META, MSG_NUM, NAME_STYLE, OUT, INTERPOLATE,
-      REVFLT, NO_REVFLT, MSB, NO_MSB, LIT_ENDIAN, UNIT, NAMEPATH, PNT,
+      REVFLT, NO_REVFLT, MSB, NO_MSB, LIT_ENDIAN, UNIT, UNIT_M, UNIT_B, NAMEPATH, PNT,
       PNTFILE, POLYSHP,
       NOMISS_SHP, DECIMAL, IS0, GRADS, SIMPLEWX, RADEARTH, SEPARATOR,
       WXPARSE, PNTSTYLE, DATABASE, INDEXFILE, CUBE, NO_CUBE, DATAPROBE,
@@ -1721,6 +1723,22 @@ static int ParseUserChoice (userType *usr, char *cur, char *next)
                        (strcmp (next, "none") == 0)) {
                usr->f_unit = 0;
             } else {
+               errSprintf ("Bad value to '%s' of '%s'\n", cur, next);
+               return -1;
+            }
+         }
+         return 2;
+      case UNIT_M:
+         if (usr->unitM == 1) {
+            if (myAtoF (next, &(usr->unitM)) != 1) {
+               errSprintf ("Bad value to '%s' of '%s'\n", cur, next);
+               return -1;
+            }
+         }
+         return 2;
+      case UNIT_B:
+         if (usr->unitB == 0) {
+            if (myAtoF (next, &(usr->unitB)) != 1) {
                errSprintf ("Bad value to '%s' of '%s'\n", cur, next);
                return -1;
             }

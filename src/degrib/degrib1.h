@@ -25,5 +25,6 @@ int GRIB1_RefTime (FILE * fp, uInt4 gribLen, double *refTime);
 int ReadGrib1Record (FILE * fp, sChar f_unit, double **Grib_Data,
                      uInt4 *grib_DataLen, grib_MetaData * meta,
                      IS_dataType * IS, sInt4 sect0[SECT0LEN_WORD],
-                     uInt4 gribLen, double majEarth, double minEarth);
+                     uInt4 gribLen, double majEarth, double minEarth,
+                     double usrUnitM, double usrUnitB);
 #endif

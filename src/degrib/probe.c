@@ -905,7 +905,7 @@ int GRIB2Probe (userType *usr, int numPnts, Point * pnts, char **labels,
       if (ReadGrib2Record (grib_fp, usr->f_unit, &grib_Data, &grib_DataLen,
                            &meta, &is, subgNum, usr->majEarth, usr->minEarth,
                            usr->f_SimpleVer, usr->f_SimpleWWA, &f_endMsg, &(usr->lwlf),
-                           &(usr->uprt)) != 0) {
+                           &(usr->uprt), usr->unitM, usr->unitB) != 0) {
          preErrSprintf ("ERROR: In call to ReadGrib2Record.\n");
          for (i = 0; i < numPnts; i++) {
             if (f_firstFps[i]) {
@@ -1089,7 +1089,8 @@ int GenericProbe_ (char *filename, int *numPnts, double *lat, double *lon,
 */
 
 int GenericProbe (char *filename, int numPnts, double *lat, double *lon,
-                  int f_interp, int *lenTime, char ***valTime, double ***data)
+                  int f_interp, int *lenTime, char ***valTime, double ***data,
+                  double usrUnitM, double usrUnitB)
 {
    FILE *grib_fp;       /* The opened grib2 file for input. */
    uInt4 grib_DataLen;  /* Current length of grib_Data. */
@@ -1152,7 +1153,7 @@ int GenericProbe (char *filename, int numPnts, double *lat, double *lon,
       /* Read the GRIB message. */
       if (ReadGrib2Record (grib_fp, f_unit, &grib_Data, &grib_DataLen, &meta,
                            &is, subgNum, majEarth, minEarth, f_SimpleVer, f_SimpleWWA,
-                           &f_endMsg, &lwlf, &uprt) != 0) {
+                           &f_endMsg, &lwlf, &uprt, usrUnitM, usrUnitB) != 0) {
          msg = errSprintf (NULL);
          fprintf (stderr, "ERROR: In call to GenericProbe().\n%s", msg);
          free (msg);

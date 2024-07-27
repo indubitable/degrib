@@ -64,13 +64,14 @@ int ReadGrib2Record (FILE * fp, sChar f_unit, double **Grib_Data,
                      uInt4 *grib_DataLen, grib_MetaData * meta,
                      IS_dataType * IS, int subgNum, double majEarth,
                      double minEarth, int simpVer, int simpWWA, sInt4 * f_endMsg,
-                     LatLon *lwlf, LatLon *uprt);
+                     LatLon *lwlf, LatLon *uprt, double usrUnitM, double usrUnitB);
 
 int ReadGrib2RecordFast (FILE *fp, sChar f_unit, double **Grib_Data,
                          uInt4 *grib_DataLen, grib_MetaData *meta,
                          IS_dataType *IS, int subgNum, double majEarth,
                          double minEarth, int simpVer, int simpWWA,
-                         sInt4 *f_endMsg, LatLon *lwlf, LatLon *uprt);
+                         sInt4 *f_endMsg, LatLon *lwlf, LatLon *uprt,
+                         double usrUnitM, double usrUnitB);
 
 /* Possible error messages left in errSprintf() */
 int FindGRIBMsg (FILE * fp, int msg, sInt4 *offset, int *curMsg);

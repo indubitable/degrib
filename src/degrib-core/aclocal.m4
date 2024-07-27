@@ -61,19 +61,6 @@ AC_DEFUN([SET_ANSIFLAG],
 ])
 
 #####
-# Set @DWINDOWS@ variable.
-#####
-AC_DEFUN([SET_DWINDOWS],
-[
-  DWINDOWS=""
-  case $host in
-    *-*-cygwin*|*-*-mingw*)
-      DWINDOWS="-D_WINDOWS_";;
-  esac
-  AC_SUBST([DWINDOWS])
-])
-
-#####
 # Set @DYNAMIC_LIB@ variable.
 # may not properly handle the hpgcc case of -ldld
 #####

@@ -1151,6 +1151,11 @@ static void DrawGrid (layerType *layer, maparam *map, gdImagePtr im,
 #ifdef DEBUG
    printf ("Arthur 2 :: %f\n", clock () / (double) (CLOCKS_PER_SEC));
 #endif
+   /* Initialize the lastPnts array */
+   lastPnts[0].x = -1; lastPnts[0].y = -1;
+   lastPnts[1].x = -1; lastPnts[1].y = -1;
+   lastPnts[2].x = -1; lastPnts[2].y = -1;
+   lastPnts[3].x = -1; lastPnts[3].y = -1;
 
    for (j = 1; j <= layer->gridNy; j++) {
       for (i = 1; i <= layer->gridNx; i++) {
@@ -1172,7 +1177,7 @@ static void DrawGrid (layerType *layer, maparam *map, gdImagePtr im,
              * For B) (max - min) / (# value - 1) = 9 / 3 = 2                                    
              */          
             step = (layer->ramp.max - layer->ramp.min) / (layer->ramp.numColors - 1);
-            index = (int) (value - layer->ramp.min) / step;
+            index = (int) ((value - layer->ramp.min) / step);
 /*
             if (index == (int) layer->ramp.numColors) {
                index = layer->ramp.numColors - 1;
@@ -2951,7 +2956,7 @@ static int DrawLayer (layerType *layer, maparam *map, gdImagePtr im,
    size_t i;
    int ans = 0;
    sInt4 numFDraw = -1;
-   char *FDraw;
+   char *FDraw = NULL;
    double X, Y;
    sInt4 x, y;
 
@@ -3328,7 +3333,7 @@ printf ("Why is this needed here?\n");
                                gdFrame[m].sizeY);
                }
 /*#ifdef WIN32*/
-#ifdef _WINDOWS_
+#ifdef MS_WINDOWS
                /* Set stdout to binary mode (the 1 means stdout) */
                setmode (1, O_BINARY);
 #endif
